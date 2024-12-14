@@ -1,0 +1,22 @@
+name: rag@home
+include:
+  - docker-compose-ragflow.yml
+services:
+  ollama:
+    image: ollama/ollama:latest
+    # ports:
+    #   - 11434:11434
+    volumes:
+      - ~/.ollama:/root/.ollama
+    environment:
+      - OLLAMA_LLM_LIBRARY='cuda_v12'
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - ragflow
